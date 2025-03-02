@@ -1,0 +1,10 @@
+# ~/.config/starship.toml
+
+[git_status]
+# Display git status on a single line for a clean look
+format = "[$all_status ]($style)"
+style = "bold yellow"
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
