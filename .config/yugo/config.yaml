@@ -225,3 +225,48 @@ programs:
       windows:
         winget: >
           winget install --id GitHub.cli --silent --scope machine
+
+  openjdk:
+    description: "OpenJDK - Open Java Development Kit"
+    tags: ["development", "language"]
+    installs:
+      linux:
+        pacman: >
+          sudo pacman -Syu --needed jdk-openjdk
+      darwin:
+        brew: >
+          brew install openjdk || brew upgrade openjdk
+
+  starship:
+    description: "Starship - The minimal, blazing-fast, and infinitely customizable prompt for any shell!"
+    tags: ["utility", "term-ui"]
+    installs:
+      linux:
+        apt: >
+          sudo apt update &&
+          sudo apt install -y starship
+        pacman: >
+          sudo pacman -Syu --needed starship
+      darwin:
+        brew: >
+          brew install starship || brew upgrade starship
+      windows:
+        winget: >
+          winget install --id Starship.Starship --silent --scope machine
+
+  ghostty:
+    description: "Ghostty - A simple and fast terminal emulator"
+    tags: ["utility", "terminal"]
+    installs:
+      linux:
+        apt: >
+          sudo apt update &&
+          sudo apt install -y ghostty
+        pacman: >
+          sudo pacman -Syu --needed ghostty
+      darwin:
+        brew: >
+          brew install ghostty || brew upgrade ghostty
+      windows:
+        winget: >
+          winget install --id Ghostty.Ghostty --silent --scope machine
