@@ -27,10 +27,10 @@ programs:
     installs:
       linux:
         pacman: >
-          sudo pacman -S --needed git base-devel &&
+          sudo pacman -S --needed --noconfirm git base-devel &&
           git clone https://aur.archlinux.org/yay.git &&
           cd yay &&
-          makepkg -si
+          makepkg -si --noconfirm
 
   git:
     description: "Git Version Control System"
@@ -41,7 +41,7 @@ programs:
           sudo apt update &&
           sudo apt install -y git
         pacman: >
-          sudo pacman -Syu --needed git
+          sudo pacman -Syu --needed --noconfirm git
       darwin:
         brew: >
           brew install git || brew upgrade git
@@ -58,7 +58,7 @@ programs:
           sudo apt update &&
           sudo apt install -y golang
         pacman: >
-          sudo pacman -Syu --needed go
+          sudo pacman -Syu --needed --noconfirm go
       darwin:
         brew: >
           brew install go || brew upgrade go
@@ -95,7 +95,7 @@ programs:
           sudo apt update &&
           sudo apt install -y firefox
         pacman: >
-          sudo pacman -Syu --needed firefox
+          sudo pacman -Syu --needed --noconfirm firefox
       darwin:
         brew: >
           brew install firefox || brew upgrade firefox
@@ -112,7 +112,7 @@ programs:
           sudo apt update &&
           sudo apt install -y neovim
         pacman: >
-          sudo pacman -Syu --needed neovim
+          sudo pacman -Syu --needed --noconfirm neovim
       darwin:
         brew: >
           brew install neovim || brew upgrade neovim
@@ -133,7 +133,7 @@ programs:
           sudo apt update &&
           sudo apt install -y code
         pacman: >
-          sudo pacman -Syu --needed code
+          sudo pacman -Syu --needed --noconfirm code
       darwin:
         brew: >
           brew install --cask visual-studio-code || brew upgrade --cask visual-studio-code
@@ -150,7 +150,7 @@ programs:
           sudo apt update &&
           sudo apt install -y tree
         pacman: >
-          sudo pacman -Syu --needed tree
+          sudo pacman -Syu --needed --noconfirm tree
       darwin:
         brew: >
           brew install tree || brew upgrade tree
@@ -167,7 +167,7 @@ programs:
           sudo apt update &&
           sudo apt install -y neofetch
         pacman: >
-          sudo pacman -Syu --needed neofetch
+          sudo pacman -Syu --needed --noconfirm neofetch
       darwin:
         brew: >
           brew install neofetch || brew upgrade neofetch
@@ -184,7 +184,7 @@ programs:
           sudo apt update &&
           sudo apt install -y fzf
         pacman: >
-          sudo pacman -Syu --needed fzf
+          sudo pacman -Syu --needed --noconfirm fzf
       darwin:
         brew: >
           brew install fzf || brew upgrade fzf
@@ -201,7 +201,7 @@ programs:
           sudo apt update &&
           sudo apt install -y yazi
         yay: >
-          yay -S --needed yazi
+          yay -S --needed --noconfirm yazi
       darwin:
         brew: >
           brew install yazi || brew upgrade yazi
@@ -218,7 +218,7 @@ programs:
           sudo apt update &&
           sudo apt install -y gh
         pacman: >
-          sudo pacman -Syu --needed gh
+          sudo pacman -Syu --needed --noconfirm gh
       darwin:
         brew: >
           brew install gh || brew upgrade gh
@@ -232,7 +232,7 @@ programs:
     installs:
       linux:
         pacman: >
-          sudo pacman -Syu --needed jdk-openjdk
+          sudo pacman -Syu --needed --noconfirm jdk-openjdk
       darwin:
         brew: >
           brew install openjdk || brew upgrade openjdk
@@ -246,7 +246,7 @@ programs:
           sudo apt update &&
           sudo apt install -y starship
         pacman: >
-          sudo pacman -Syu --needed starship
+          sudo pacman -Syu --needed --noconfirm starship
       darwin:
         brew: >
           brew install starship || brew upgrade starship
@@ -263,7 +263,7 @@ programs:
           sudo apt update &&
           sudo apt install -y ghostty
         pacman: >
-          sudo pacman -Syu --needed ghostty
+          sudo pacman -Syu --needed --noconfirm ghostty
       darwin:
         brew: >
           brew install ghostty || brew upgrade ghostty
@@ -280,7 +280,7 @@ programs:
             sudo apt update &&
             sudo apt install -y stow
           pacman: >
-            sudo pacman -Syu --needed stow
+            sudo pacman -Syu --needed --noconfirm stow
         darwin:
           brew: >
             brew install stow || brew upgrade stow
