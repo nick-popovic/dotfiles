@@ -69,16 +69,7 @@ programs:
   google-chrome:
     description: "Google Chrome Web Browser"
     tags: ["browser"]
-    installs:
-      linux:
-        apt: >
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |
-          gpg --dearmor > /usr/share/keyrings/google-chrome-archive-keyring.gpg &&
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome-archive-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list &&
-          sudo apt update &&
-          sudo apt install -y google-chrome-stable
-        yay: >
-          yay -S --needed google-chrome
+    installs:        
       darwin:
         brew: >
           brew install google-chrome || brew upgrade google-chrome
@@ -132,8 +123,8 @@ programs:
           sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' &&
           sudo apt update &&
           sudo apt install -y code
-        pacman: >
-          sudo pacman -Syu --needed --noconfirm code
+        yay: >
+          yay -S --noconfirm --needed visual-studio-code-bin
       darwin:
         brew: >
           brew install --cask visual-studio-code || brew upgrade --cask visual-studio-code
