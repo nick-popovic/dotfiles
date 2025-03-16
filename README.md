@@ -1,4 +1,4 @@
-# Dotfiles (for Mac)
+# Dotfiles (for Mac-testing)
 
 My collection of dotfiles for Mac.
 
