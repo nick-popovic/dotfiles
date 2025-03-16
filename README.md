@@ -12,7 +12,7 @@ I expect to use `zsh` on Mac and `bash` on Linux. This is because I just use the
 ### Installation
 
 ```bash
-git clone --branch mac https://github.com/nick-popovic/dotfiles.git ~/dotfiles
+git clone --branch mac-test https://github.com/nick-popovic/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 chmod u+x dot_install.sh
 ./dot_install.sh
