@@ -261,3 +261,22 @@ programs:
         windows:
           winget: >
             winget install --id GNU.Stow --silent --scope machine
+
+  lazygit:
+    description: "A simple terminal UI for git commands"
+    tags: ["utility", "development", "git"]
+    installs:
+      linux:
+        apt: >
+          LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') &&
+          sudo curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" &&
+          sudo tar xf lazygit.tar.gz lazygit &&
+          sudo install lazygit /usr/local/bin
+        pacman: >
+          sudo pacman -Syu --needed --noconfirm lazygit
+      darwin:
+        brew: >
+          brew install lazygit || brew upgrade lazygit
+      windows:
+        winget: >
+          winget install -e --id jesseduffield.lazygit --silent --scope machine
