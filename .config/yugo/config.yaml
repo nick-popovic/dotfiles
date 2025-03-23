@@ -32,23 +32,6 @@ programs:
           cd yay &&
           makepkg -si --noconfirm
 
-  git:
-    description: "Git Version Control System"
-    tags: ["version control (install stand-alone)"]
-    installs:
-      linux:
-        apt: >
-          sudo apt update &&
-          sudo apt install -y git
-        pacman: >
-          sudo pacman -Syu --needed --noconfirm git
-      darwin:
-        brew: >
-          brew install git || brew upgrade git
-      windows:
-        winget: >
-          winget install --id Git.Git --silent --scope machine
-
   go:
     description: "Go Programming Language"
     tags: ["development", "language"]
