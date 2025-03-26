@@ -49,6 +49,23 @@ programs:
         winget: >
           winget install --id golang.go --silent --scope machine
 
+  delve:
+    description: "Delve - Go Debugger"
+    tags: ["development", "debugger"]
+    installs:
+      linux:
+        apt: >
+          sudo apt update &&
+          sudo apt install -y delve
+        pacman: >
+          sudo pacman -Syu --needed --noconfirm delve
+      darwin:
+        brew: >
+          brew install delve || brew upgrade delve
+      windows:
+        winget: >
+          winget install --id Go.Delve --silent --scope machine
+
   google-chrome:
     description: "Google Chrome Web Browser"
     tags: ["browser"]
@@ -280,3 +297,21 @@ programs:
       windows:
         winget: >
           winget install -e --id jesseduffield.lazygit --silent --scope machine
+
+
+  xclip:
+    description: "Xclip - Command line interface to the X11 clipboard"
+    tags: ["utility", "clipboard"]
+    installs:
+      linux:
+        apt: >
+          sudo apt update &&
+          sudo apt install -y xclip
+        pacman: >
+          sudo pacman -Syu --needed --noconfirm xclip
+      darwin:
+        brew: >
+          brew install xclip || brew upgrade xclip
+      windows:
+        winget: >
+          winget install --id Xclip.Xclip --silent --scope machine
