@@ -27,16 +27,22 @@ return {
 
       local lspconfig = require("lspconfig")
 
-      lspconfig.tailwindcss.setup({
-        capabilities = capabilities
-      })
-      lspconfig.ruby_lsp.setup({
+      lspconfig.gopls.setup({
         capabilities = capabilities,
-        cmd = { "/home/typecraft/.asdf/shims/ruby-lsp" }
       })
+
+      lspconfig.pyright.setup({
+        capabilities = capabilities,
+      })
+
       lspconfig.lua_ls.setup({
         capabilities = capabilities
       })
+
+      lspconfig.clangd.setup({
+        capabilities = capabilities
+      })
+
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
