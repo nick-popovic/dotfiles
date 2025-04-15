@@ -315,3 +315,21 @@ programs:
       windows:
         winget: >
           winget install --id Xclip.Xclip --silent --scope machine
+
+
+  tmux:
+    description: "Tmux - Terminal multiplexer"
+    tags: ["utility", "terminal"]
+    installs:
+      linux:
+        apt: >
+          sudo apt update &&
+          sudo apt install -y tmux
+        pacman: >
+          sudo pacman -Syu --needed --noconfirm tmux
+      darwin:
+        brew: >
+          brew install tmux || brew upgrade tmux
+      windows:
+        winget: >
+          winget install --id tmux.tmux --silent --scope machine
