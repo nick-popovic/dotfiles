@@ -12,13 +12,6 @@ vim.keymap.set('n', '<c-j>', ':wincmd j<CR>')
 vim.keymap.set('n', '<c-h>', ':wincmd h<CR>')
 vim.keymap.set('n', '<c-l>', ':wincmd l<CR>')
 
--- Navigate vim panes with crtl+arrow keys
-vim.keymap.set('n', '<c-up>', ':wincmd k<CR>')
-vim.keymap.set('n', '<c-down>', ':wincmd j<CR>')
-vim.keymap.set('n', '<c-left>', ':wincmd h<CR>')
-vim.keymap.set('n', '<c-right>', ':wincmd l<CR>')
-
-
 vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>')
 vim.wo.number = true
 

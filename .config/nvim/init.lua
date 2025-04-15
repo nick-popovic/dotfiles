@@ -13,3 +13,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require("vim-options")
 require("lazy").setup("plugins")
+
+-- Enable number and relative number
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+-- Center after page down / up
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true })
