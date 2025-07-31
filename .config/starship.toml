@@ -1,9 +1,10 @@
-# ~/.config/starship.toml
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
 
-[git_status]
-# Display git status on a single line for a clean look
-format = "[$all_status ]($style)"
-style = "bold yellow"
+[git_branch]
+format = "on [ $branch ->   $remote_name/$remote_branch]($style) "
+always_show_remote = true
+style = 'red bold'
 
 [character]
 success_symbol = "[❯](green)"
