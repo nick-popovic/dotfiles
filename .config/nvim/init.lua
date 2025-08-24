@@ -1,3 +1,4 @@
+-- Set up lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -9,15 +10,26 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
+
 vim.opt.rtp:prepend(lazypath)
+require("core.options")          -- Load core configurations
+require("lazy").setup("plugins") -- Load plugins
 
-require("vim-options")
-require("lazy").setup("plugins")
+-- Function to completely reload the entire configuratn
+function _G.ReloadConfig()
+    -- Clear the cache for all modules under your config namespaces
+    for name, _ in pairs(package.loaded) do
+        if name:match('^core') or name:match('^plugins') then
+            package.loaded[name] = nil
+        end
+    end
 
--- Enable number and relative number
-vim.opt.number = true
-vim.opt.relativenumber = true
+    -- Source the main configuration file again
+    dofile(vim.fn.stdpath('config') .. '/init.lua')
 
--- Center after page down / up
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true })
+    -- Notify the user
+    vim.notify('Nvim configuration completely reloaded!', vim.log.levels.INFO)
+end
+
+-- Keymap to trigger the full reload
+vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>lua ReloadConfig()<CR>', { noremap = true, silent = true, desc = "Reload entire config" })
