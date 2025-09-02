@@ -1,140 +1,158 @@
 return {
-    -- LSP Config
-    {
-        "neovim/nvim-lspconfig",
-        dependencies = {
-            "hrsh7th/nvim-cmp",                    -- Completion framework
-            "hrsh7th/cmp-nvim-lsp",                -- LSP source for nvim-cmp
-            "hrsh7th/cmp-buffer",                  -- Buffer source for nvim-cmp
-            "hrsh7th/cmp-path",                    -- Path source for nvim-cmp
-            "hrsh7th/cmp-cmdline",                 -- Cmdline source for nvim-cmp
-            "L3MON4D3/LuaSnip",                    -- Snippet engine
-            "saadparwaiz1/cmp_luasnip",            -- Snippet completion
-            "rafamadriz/friendly-snippets",        -- Snippet collection
-            "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help source
-        },
-        config = function()
-            -- Diagnostic options with signs configured
-            vim.diagnostic.config({
-                -- virtual_text = false, -- Disable virtual text (optional)
-                virtual_text = {
-                    spacing = 4,
-                    source = "if_many",
-                    prefix = "●",
-                    -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-                    -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-                    -- prefix = "icons",
-                },
-                update_in_insert = true,
-                severity_sort = true,
-            })
+	-- LSP Config
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"hrsh7th/nvim-cmp", -- Completion framework
+			"hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
+			"hrsh7th/cmp-buffer", -- Buffer source for nvim-cmp
+			"hrsh7th/cmp-path", -- Path source for nvim-cmp
+			"hrsh7th/cmp-cmdline", -- Cmdline source for nvim-cmp
+			"L3MON4D3/LuaSnip", -- Snippet engine
+			"saadparwaiz1/cmp_luasnip", -- Snippet completion
+			"rafamadriz/friendly-snippets", -- Snippet collection
+			"hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help source
+		},
+		config = function()
+			-- Diagnostic options with signs configured
+			vim.diagnostic.config({
+				-- virtual_text = false, -- Disable virtual text (optional)
+				virtual_text = {
+					spacing = 4,
+					source = "if_many",
+					prefix = "●",
+					-- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+					-- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+					-- prefix = "icons",
+				},
+				update_in_insert = true,
+				severity_sort = true,
+			})
 
-            -- Key mappings for diagnostic navigation
-            vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>',
-                { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>',
-                { noremap = true, silent = true })
-            -- vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>',
-            --     { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>',
-                { noremap = true, silent = true })
+			-- Key mappings for diagnostic navigation
+			vim.api.nvim_set_keymap(
+				"n",
+				"[d",
+				"<cmd>lua vim.diagnostic.goto_prev()<CR>",
+				{ noremap = true, silent = true }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"]d",
+				"<cmd>lua vim.diagnostic.goto_next()<CR>",
+				{ noremap = true, silent = true }
+			)
 
-            -- Function to copy diagnostics on the current line
-            function _G.CopyDiagnostics()
-                local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
-                if vim.tbl_isempty(diagnostics) then
-                    vim.notify('No diagnostics on this line', vim.log.levels.INFO)
-                    return
-                end
-                local messages = {}
-                for _, d in ipairs(diagnostics) do
-                    table.insert(messages, d.message)
-                end
-                local message_str = table.concat(messages, '\n')
-                vim.fn.setreg('+', message_str)
-                vim.notify('Copied ' .. #diagnostics .. ' diagnostic(s) to clipboard', vim.log.levels.INFO)
-            end
+			-- vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>',
+			--     { noremap = true, silent = true })
 
-            vim.api.nvim_set_keymap('n', '<leader>y', '<cmd>lua CopyDiagnostics()<CR>', { noremap = true, silent = true, desc = "Copy diagnostics on line" })
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>q",
+				"<cmd>lua vim.diagnostic.setloclist()<CR>",
+				{ noremap = true, silent = true }
+			)
 
-            -- Show floating diagnostics automatically on hover
-            vim.api.nvim_create_autocmd("CursorHold", {
-                callback = function()
-                    vim.diagnostic.open_float(nil, { focusable = false })
-                end,
-            })
+			local function CopyDiagnostics()
+				local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line(".") - 1 })
+				if vim.tbl_isempty(diagnostics) then
+					vim.notify("No diagnostics on this line", vim.log.levels.INFO)
+					return
+				end
+				local messages = {}
+				for _, d in ipairs(diagnostics) do
+					table.insert(messages, d.message)
+				end
+				local message_str = table.concat(messages, "\n")
+				vim.fn.setreg("+", message_str)
+				vim.notify("Copied " .. #diagnostics .. " diagnostic(s) to clipboard", vim.log.levels.INFO)
+			end
 
-            -- Autocompletion configuration
-            local cmp = require('cmp')
-            local luasnip = require('luasnip')
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>y",
+				"<cmd>lua C			local function CopyDiagnostics()opyDiagnostics()<CR>",
+				{ noremap = true, silent = true, desc = "Copy diagnostics on line" }
+			)
 
-            cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body) -- For `luasnip` users.
-                    end,
-                },
-                mapping = {
-                    ['<Down>'] = cmp.mapping.select_next_item(),
-                    ['<Up>'] = cmp.mapping.select_prev_item(),
-                    ['<Esc>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                },
-                sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip' }, -- For luasnip users.
-                }, {
-                    { name = 'buffer' },
-                    { name = 'path' },
-                }),
-                completion = {
-                    completeopt = "menu,menuone,noinsert" .. (true and "" or ",noselect"),
-                    border = 'double',
-                },
+			-- Show floating diagnostics automatically on hover
+			vim.api.nvim_create_autocmd("CursorHold", {
+				callback = function()
+					vim.diagnostic.open_float(nil, { focusable = false })
+				end,
+			})
 
-                window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-                experimental = {
-                    ghost_text = true
-                },
-                formatting = {
-                    format = function(entry, item)
-                        local widths = {
-                            abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
-                            menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
-                        }
+			-- Autocompletion configuration
+			local cmp = require("cmp")
+			local luasnip = require("luasnip")
 
-                        for key, width in pairs(widths) do
-                            if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
-                                item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
-                            end
-                        end
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body) -- For `luasnip` users.
+					end,
+				},
+				mapping = {
+					["<Down>"] = cmp.mapping.select_next_item(),
+					["<Up>"] = cmp.mapping.select_prev_item(),
+					["<Esc>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+				},
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" }, -- For luasnip users.
+				}, {
+					{ name = "buffer" },
+					{ name = "path" },
+				}),
+				completion = {
+					completeopt = "menu,menuone,noinsert" .. (true and "" or ",noselect"),
+					border = "double",
+				},
 
-                        return item
-                    end,
-                },
-            })
+				window = {
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
+				},
+				experimental = {
+					ghost_text = true,
+				},
+				formatting = {
+					format = function(entry, item)
+						local widths = {
+							abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+							menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+						}
 
-            -- Use buffer source for `/` in command mode
-            cmp.setup.cmdline('/', {
-                sources = {
-                    { name = 'buffer' },
-                    { name = 'cmdline' }
-                }
-            })
+						for key, width in pairs(widths) do
+							if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+								item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+							end
+						end
 
-            -- Use cmdline & path source for `:` in command mode
-            cmp.setup.cmdline(':', {
-                sources = {
-                    { name = 'path' },
-                    { name = 'cmdline' }
-                }
-            })
+						return item
+					end,
+				},
+			})
 
-            -- Load snippets from friendly-snippets
-            require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-    },
+			-- Use buffer source for `/` in command mode
+			cmp.setup.cmdline("/", {
+				sources = {
+					{ name = "buffer" },
+					{ name = "cmdline" },
+				},
+			})
+
+			-- Use cmdline & path source for `:` in command mode
+			cmp.setup.cmdline(":", {
+				sources = {
+					{ name = "path" },
+					{ name = "cmdline" },
+				},
+			})
+
+			-- Load snippets from friendly-snippets
+			require("luasnip.loaders.from_vscode").lazy_load()
+		end,
+	},
 }
