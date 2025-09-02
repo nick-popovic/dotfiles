@@ -3,23 +3,23 @@
 -- and themery.nvim would have no themes to switch between.
 
 return {
-  -- Catppuccin
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    lazy = false,
-    priority = 1000,
-  },
+	-- Catppuccin
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		lazy = false,
+		priority = 1000,
+	},
 
-  -- Tokyonight
-  { "folke/tokyonight.nvim", lazy = false },
+	-- Tokyonight
+	{ "folke/tokyonight.nvim", lazy = false },
 
-  -- Gruvbox
-  { "ellisonleao/gruvbox.nvim", lazy = false },
+	-- Gruvbox
+	{ "ellisonleao/gruvbox.nvim", lazy = false },
 
-  -- Everforest
-  { "neanias/everforest-nvim", lazy = false },
+	-- Everforest
+	{ "neanias/everforest-nvim", lazy = false },
 
-  -- Rosé Pine
-  { "rose-pine/neovim", name = "rose-pine", lazy = false },
+	-- Rosé Pine
+	{ "rose-pine/neovim", name = "rose-pine", lazy = false },
 }

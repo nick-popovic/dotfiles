@@ -11,11 +11,11 @@ return {
 					"shfmt", -- shfmt for shell
 					"clang-format", -- for c
 					"google-java-format", -- for java
-                    "delve", -- for go
-                    "java-debug-adapter", -- for java
-                    "java-test", -- for java
-                    "codelldb", -- for c/c++
-                    "one-small-step-for-vimkind", -- for lua
+					"delve", -- for go
+					"java-debug-adapter", -- for java
+					"java-test", -- for java
+					"codelldb", -- for c/c++
+					"one-small-step-for-vimkind", -- for lua
 				},
 			})
 		end,
