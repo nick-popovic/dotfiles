@@ -25,12 +25,11 @@ return {
           enabled = true,
         },
         use_libuv_file_watcher = true,
-      },
-
-      filtered_items = {
-        visible = true,
-        hide_dotfiles = false,
-        hide_gitignored = false,
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
       },
 
       buffers = {

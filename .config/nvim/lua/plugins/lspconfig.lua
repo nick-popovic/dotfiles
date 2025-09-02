@@ -39,6 +39,24 @@ return {
             vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>',
                 { noremap = true, silent = true })
 
+            -- Function to copy diagnostics on the current line
+            function _G.CopyDiagnostics()
+                local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
+                if vim.tbl_isempty(diagnostics) then
+                    vim.notify('No diagnostics on this line', vim.log.levels.INFO)
+                    return
+                end
+                local messages = {}
+                for _, d in ipairs(diagnostics) do
+                    table.insert(messages, d.message)
+                end
+                local message_str = table.concat(messages, '\n')
+                vim.fn.setreg('+', message_str)
+                vim.notify('Copied ' .. #diagnostics .. ' diagnostic(s) to clipboard', vim.log.levels.INFO)
+            end
+
+            vim.api.nvim_set_keymap('n', '<leader>y', '<cmd>lua CopyDiagnostics()<CR>', { noremap = true, silent = true, desc = "Copy diagnostics on line" })
+
             -- Show floating diagnostics automatically on hover
             vim.api.nvim_create_autocmd("CursorHold", {
                 callback = function()
