@@ -13,5 +13,6 @@ PS1='[\u@\h \W]\$ '
 
 
 export EDITOR="nvim"
+export PATH="$PATH:$(go env GOPATH)/bin"
 
 eval "$(starship init bash)"
