@@ -1,1 +1,6 @@
 theme = catppuccin-mocha.conf
+window-width = 999
+window-height = 999
+
+custom-shader = /home/nick/.config/ghostty/shaders/cursor_warp.glsl
+custom-shader-animation = always
