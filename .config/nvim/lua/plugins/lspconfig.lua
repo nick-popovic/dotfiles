@@ -86,6 +86,27 @@ return {
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
 
+			-- Define custom highlight groups for nvim-cmp and ensure they persist across themes
+			local function setup_cmp_highlights()
+				vim.api.nvim_set_hl(0, "CmpPmenu", { fg = "#cdd6f4", bg = "#1e1e2e" }) -- Catppuccin Macchiato text and background
+				vim.api.nvim_set_hl(0, "CmpPmenuBorder", { fg = "#45475a", bg = "#1e1e2e" }) -- Border color
+				vim.api.nvim_set_hl(0, "CmpSel", { fg = "NONE", bg = "#45475a" }) -- Selected item background
+				-- Highlight groups for documentation windows, with a custom background
+				vim.api.nvim_set_hl(0, "CmpDocPmenu", { fg = "#cdd6f4", bg = "#515152" }) -- Light foreground on dark grey background
+				vim.api.nvim_set_hl(0, "CmpDocPmenuBorder", { fg = "#ABB2BF", bg = "#515152" }) -- Light grey border on dark grey background
+				vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#E06C75", strikethrough = true }) -- Dark red for deprecated items with strikethrough
+			end
+
+			-- Call the function initially
+			setup_cmp_highlights()
+
+			-- Set up an autocommand to re-apply highlights whenever the colorscheme changes
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				pattern = "*",
+				callback = setup_cmp_highlights,
+				desc = "Reapply nvim-cmp custom highlights after colorscheme change",
+			})
+
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -111,8 +132,14 @@ return {
 				},
 
 				window = {
-					completion = cmp.config.window.bordered(),
-					documentation = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered({
+						border = "rounded",
+						winhighlight = "Normal:CmpDocPmenu,FloatBorder:CmpDocPmenuBorder,CursorLine:CmpSel,Search:None",
+					}),
+					documentation = cmp.config.window.bordered({
+						border = "rounded",
+						winhighlight = "Normal:CmpDocPmenu,FloatBorder:CmpDocPmenuBorder,CursorLine:CmpSel,Search:None",
+					}),
 				},
 				experimental = {
 					ghost_text = true,
