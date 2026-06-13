@@ -1,0 +1,3 @@
+git:
+  autoForwardBranches: none
+  autoFetch: false
