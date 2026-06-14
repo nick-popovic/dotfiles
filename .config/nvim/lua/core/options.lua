@@ -33,6 +33,12 @@ vim.keymap.set("n", "<c-j>", ":wincmd j<CR>", { desc = "Move to the split below"
 vim.keymap.set("n", "<c-h>", ":wincmd h<CR>", { desc = "Move to the left split" })
 vim.keymap.set("n", "<c-l>", ":wincmd l<CR>", { desc = "Move to the right split" })
 
+-- Navigate vim panes with Ctrl+Shift+Arrow
+vim.keymap.set("n", "<C-S-Up>", ":wincmd k<CR>", { desc = "Move to the split above" })
+vim.keymap.set("n", "<C-S-Down>", ":wincmd j<CR>", { desc = "Move to the split below" })
+vim.keymap.set("n", "<C-S-Left>", ":wincmd h<CR>", { desc = "Move to the left split" })
+vim.keymap.set("n", "<C-S-Right>", ":wincmd l<CR>", { desc = "Move to the right split" })
+
 vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save Buffer" })
 
 -- Lazy menu
