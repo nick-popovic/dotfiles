@@ -16,14 +16,14 @@ return {
 		config = function()
 			-- Diagnostic options with signs configured
 			vim.diagnostic.config({
+				float = {
+					border = "rounded",
+				},
 				-- virtual_text = false, -- Disable virtual text (optional)
 				virtual_text = {
 					spacing = 4,
 					source = "if_many",
 					prefix = "●",
-					-- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-					-- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-					-- prefix = "icons",
 				},
 				update_in_insert = true,
 				severity_sort = true,
@@ -78,13 +78,43 @@ return {
 			-- Show floating diagnostics automatically on hover
 			vim.api.nvim_create_autocmd("CursorHold", {
 				callback = function()
-					vim.diagnostic.open_float(nil, { focusable = false })
+					local _, win_id = vim.diagnostic.open_float(nil, { focusable = false })
+					if win_id then
+						vim.api.nvim_set_option_value(
+							"winhighlight",
+							"Normal:CmpDocPmenu,FloatBorder:CmpDocPmenuBorder",
+							{ win = win_id }
+						)
+					end
 				end,
 			})
+
+
+			
+			-- Manual keymaps to trigger signature help
+			vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
+			vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
 
 			-- Autocompletion configuration
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
+
+			-- Initialize global state for ghost text
+			_G.cmp_ghost_text = false
+
+			vim.keymap.set("n", "<leader>g", function()
+				_G.cmp_ghost_text = not _G.cmp_ghost_text
+				cmp.setup({
+					experimental = {
+						ghost_text = _G.cmp_ghost_text,
+					},
+				})
+				-- Refresh lualine if available
+				local ok, lualine = pcall(require, "lualine")
+				if ok then
+					lualine.refresh()
+				end
+			end, { desc = "Toggle Ghost Text" })
 
 			-- Define custom highlight groups for nvim-cmp and ensure they persist across themes
 			local function setup_cmp_highlights()
@@ -94,7 +124,19 @@ return {
 				-- Highlight groups for documentation windows, with a custom background
 				vim.api.nvim_set_hl(0, "CmpDocPmenu", { fg = "#cdd6f4", bg = "#515152" }) -- Light foreground on dark grey background
 				vim.api.nvim_set_hl(0, "CmpDocPmenuBorder", { fg = "#ABB2BF", bg = "#515152" }) -- Light grey border on dark grey background
-				vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#E06C75", strikethrough = true }) -- Dark red for deprecated items with strikethrough
+				
+				-- A visually friendly, bright pastel red for better contrast against the grey background
+				local bright_red = "#ff95a2"
+				
+				vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = bright_red, strikethrough = true }) 
+			
+				-- Sync default Neovim floats (like diagnostics) to use the grey background
+				vim.api.nvim_set_hl(0, "NormalFloat", { link = "CmpDocPmenu" })
+				vim.api.nvim_set_hl(0, "FloatBorder", { link = "CmpDocPmenuBorder" })
+
+				-- Override specific red text elements inside floats to use our new bright red
+				vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { fg = bright_red, bg = "#515152" })
+				vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { fg = bright_red, bg = "#515152", bold = true })
 			end
 
 			-- Call the function initially
@@ -114,10 +156,30 @@ return {
 					end,
 				},
 				mapping = {
-					["<Down>"] = cmp.mapping.select_next_item(),
-					["<Up>"] = cmp.mapping.select_prev_item(),
-					["<Esc>"] = cmp.mapping.abort(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+					["<Up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+					["<Esc>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.abort()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<CR>"] = cmp.mapping.confirm({ select = false }),
+					["<Right>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.scroll_docs(4)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<Left>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.scroll_docs(-4)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
 				},
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
@@ -142,7 +204,7 @@ return {
 					}),
 				},
 				experimental = {
-					ghost_text = true,
+					ghost_text = _G.cmp_ghost_text,
 				},
 				formatting = {
 					format = function(entry, item)
@@ -220,6 +282,24 @@ return {
 
 			-- Load snippets from friendly-snippets
 			require("luasnip.loaders.from_vscode").lazy_load()
+
+			-- Global mappings for LuaSnip jumping (works better outside of nvim-cmp)
+			vim.keymap.set({ "i", "s" }, "<Tab>", function()
+				if luasnip.expand_or_jumpable() then
+					luasnip.expand_or_jump()
+				else
+					-- Insert a standard Tab character if we are not jumping
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+				end
+			end, { silent = true, desc = "LuaSnip Jump Forward" })
+
+			vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
+				if luasnip.jumpable(-1) then
+					luasnip.jump(-1)
+				else
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<S-Tab>", true, false, true), "n", false)
+				end
+			end, { silent = true, desc = "LuaSnip Jump Backward" })
 		end,
 	},
 }
