@@ -18,6 +18,12 @@ return {
 						end
 						return _G.cmp_ghost_text and "👻 ON" or "👻 OFF"
 					end,
+					function()
+						if _G.copilot_enabled == nil then
+							return ""
+						end
+						return _G.copilot_enabled and "🤖 ON" or "🤖 OFF"
+					end,
 					"%=", --[[ add your center components here in place of this comment ]]
 				},
 				lualine_x = {},
