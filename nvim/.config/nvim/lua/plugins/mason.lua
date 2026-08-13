@@ -27,7 +27,7 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "gopls", "jdtls", "clangd" }, -- Add more LSP servers you need
+				ensure_installed = { "lua_ls", "gopls", "jdtls", "clangd", "sqls" }, -- Add more LSP servers you need
 			})
 
 			vim.lsp.config("lua_ls", {
@@ -37,7 +37,7 @@ return {
 							version = "Lua 5.3",
 						},
 						diagnostics = {
-							globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
+							globals = { "bit", "vim", "it", "describe", "before_each", "after_each", "hl" },
 						},
 						workspace = {
 							library = vim.api.nvim_get_runtime_file("", true), -- Make Neovim runtime files discoverable
@@ -84,6 +84,10 @@ return {
 			})
 
 			vim.lsp.config("clangd", {
+				capabilities = capabilities,
+			})
+
+			vim.lsp.config("sqls", {
 				capabilities = capabilities,
 			})
 		end,

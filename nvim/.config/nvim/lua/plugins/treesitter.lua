@@ -25,10 +25,16 @@ return {
 					"markdown",
 					"markdown_inline",
 					"vimdoc",
+					"sql",
 				},
 				highlight = { enable = true },
 				indent = { enable = false },
 			})
+
+			-- Make sure Treesitter uses the SQL parser for any Dadbod-specific SQL filetypes
+			vim.treesitter.language.register("sql", "sqlite")
+			vim.treesitter.language.register("sql", "mysql")
+			vim.treesitter.language.register("sql", "plsql")
 		end,
 	},
 }

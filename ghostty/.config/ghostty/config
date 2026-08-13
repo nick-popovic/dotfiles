@@ -1,3 +1,6 @@
+font-family = "DroidSansM Nerd Font"
+font-size = 12
+
 theme = catppuccin-mocha.conf
 window-width = 999
 window-height = 999
